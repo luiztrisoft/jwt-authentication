@@ -4,6 +4,7 @@ import {InputText} from 'primereact/inputtext';
 //import Button from '../../components/form/button/Button';
 import './Login.css';
 import authService from '../../services/auth/auth.service';
+import swal from 'sweetalert';
 
 
 class Login extends Component {    
@@ -47,9 +48,11 @@ class Login extends Component {
                     error.response.data.message) ||
                     error.message ||
                     error.toString();
-                alert(resMessage)
+                swal("Ops!", resMessage, "error");
               }
           )  
+        }else{
+            swal("Calma...", "Insira o usuario e a senha corretamente", "warning")
         }
     }
 
