@@ -1,16 +1,14 @@
 import React, {Component} from 'react';
 import {InputText} from 'primereact/inputtext';
- import {Button} from 'primereact/button';
-//import Button from '../../components/form/button/Button';
+import {Button} from 'primereact/button';
 import './Login.css';
 import authService from '../../services/auth/auth.service';
 import swal from 'sweetalert';
-
+import { Link } from 'react-router-dom';
 
 class Login extends Component {    
     constructor() {
         super();
-        //this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFormChange = this.handleFormChange.bind(this);        
         this.state = {
             form:{
@@ -85,6 +83,10 @@ class Login extends Component {
                         <div className="p-col-12 p-md-12" style={{textAlign:'center'}}>
                             <Button type='submit' label="Acessar" onClick={this.handleSubmit}/>                        
                         </div>
+
+                        <div style={{marginTop: "30px"}} className="p-col-12 p-md-12 container">
+                            <Link to={"/signup"}>Inscreva-se</Link>
+                        </div>  
                     </div>      
                 </div>                      
             </div>

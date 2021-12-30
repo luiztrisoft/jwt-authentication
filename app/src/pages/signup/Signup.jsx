@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {InputText} from 'primereact/inputtext';
- import {Button} from 'primereact/button';
-//import Button from '../../components/form/button/Button';
+import {Button} from 'primereact/button';
 import './Signup.css';
 import authService from '../../services/auth/auth.service';
 import swal from 'sweetalert';
-
+import { Link } from 'react-router-dom';
 
 class Signup extends Component {    
     constructor() {
@@ -37,12 +36,6 @@ class Signup extends Component {
     handleRegister(e) {
         e.preventDefault();
     
-        // this.setState({
-        //   message: "",
-        //   successful: false
-        // });
-    
-        // this.form.validateAll();
         const {usuario, email, senha} = this.state.form;
     
         if (usuario && email && senha) {
@@ -75,7 +68,7 @@ class Signup extends Component {
                     <div className="p-grid p-fluid">                         
                         
                         <div className="p-col-12 p-md-12 container">
-                            <h1> <i className='fas fa-add'/> Signup</h1>
+                            <h1> <i className='fas fa-user-plus'/> Signup</h1>
                         </div>  
 
                         <div className="p-col-12 p-md-12">
@@ -106,6 +99,10 @@ class Signup extends Component {
                         <div className="p-col-12 p-md-12" style={{textAlign:'center'}}>
                             <Button label="Acessar" onClick={this.handleRegister}/>                        
                         </div>
+
+                        <div style={{marginTop: "30px"}} className="p-col-12 p-md-12 container">
+                            <Link to={"/login"}>Acesse agora mesmo</Link>
+                        </div>  
                     </div>      
                 </div>                      
             </div>
