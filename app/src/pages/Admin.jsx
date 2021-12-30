@@ -1,10 +1,16 @@
 import React, {Component} from 'react';
 import userService from '../services/user/user.service';
+// import EventBus from '../config/EventBus'
+import authService from '../services/auth/auth.service';
+import Forbidden from './forbidden/Forbidden';
 
 class Admin extends Component {    
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+          content: undefined,
+          forbidden: undefined
+        };
     }
 
     componentDidMount() {
@@ -16,7 +22,7 @@ class Admin extends Component {
           },
           error => {
             this.setState({
-              content:
+              forbidden:
                 (error.response &&
                   error.response.data &&
                   error.response.data.message) ||
@@ -24,18 +30,36 @@ class Admin extends Component {
                 error.toString()
             });
     
-            // if (error.response && error.response.status === 401) {
-            //   EventBus.dispatch("logout");
-            // }
+            if (error.response && error.response.status === 401) {
+              authService.logout()
+              this.props.history.push("login") 
+              window.location.reload() 
+            }
           }
         );
       }
 
-    render() {   
+    render(){
+      let page = this.state.forbidden ? <Forbidden/> : this.renderPage()
+      return page        
+    }
+
+    renderPage() {   
+        const style = {
+          display: 'flex', 
+          alignItems: 'center',
+          alignContent: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#AF0BC0',
+          color: '#fff',
+          padding: '50px',
+          borderRadius: '10px'
+        }
         return (  
-            <div className="p-grid p-fluid">   
+            <div className="p-grid p-fluid" style={style}>   
                 <div className="p-col-12 p-lg-12">        
                     <h1>Admin</h1>
+                    <p>{this.state.content}</p>
                 </div> 
             </div>
         )

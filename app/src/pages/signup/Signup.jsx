@@ -40,19 +40,18 @@ class Signup extends Component {
     
         if (usuario && email && senha) {
           authService.register(usuario,email,senha).then(
-            response => {
-                console.log("SUCESSO!",response)
+            response => {                
               swal("Parabéns!", "Usuário salvo com sucesso","success");
             },
             error => {
-              const resMessage =
+              const msg =
                 (error.response &&
                   error.response.data &&
                   error.response.data.message) ||
                 error.message ||
                 error.toString();
     
-             swal("Ops!", resMessage, "error");
+             swal("Ops!", msg, "error");
             }
           );
         }else{

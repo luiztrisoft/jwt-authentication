@@ -117,8 +117,7 @@ class App extends Component {
             'layout-overlay-sidebar-active': this.state.overlayMenuActive && this.state.layoutMode === 'overlay',
             'layout-mobile-sidebar-active': this.state.mobileMenuActive
         });
-
-        console.log('currentUser', this.state.currentUser)
+        
 		return(
 		    this.state.currentUser ? (        
                 <div className={wrapperClass} onClick={this.onWrapperClick}>

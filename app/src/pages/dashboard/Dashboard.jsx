@@ -1,16 +1,28 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
 import imgFromAsset from '../../assets/img/oficialasset.png'
 
 import './Dashboard.css';
 import trisoft from '../../assets/img/logo.png'
 import If from '../../components/if/If';
+import authService from '../../services/auth/auth.service';
 
 class Dashboard extends Component {    
-    constructor() {
-        super();
-        this.state = {};
-    }
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+          redirect: null,
+          userReady: false,
+          currentUser: { username: "" }
+        };
+      }
+    
+      componentDidMount() {
+        const currentUser = authService.getCurrentUser();
+    
+        if (!currentUser) this.setState({ redirect: "/home" });
+        this.setState({ currentUser: currentUser, userReady: true })
+      }
 
     renderImage(){
         return <img src={trisoft} alt="trisoft" width="20px" />
@@ -18,33 +30,47 @@ class Dashboard extends Component {
     
     render() {   
         let mostrarLogo = true;
+        const { currentUser } = this.state;
         return (  
             <div className="p-grid p-fluid">   
 
                 <If test={mostrarLogo}>
                     <div className="p-col-12 p-lg-12">        
-                        <img src={imgFromAsset} style={{ width: '100%', marginTop: '1%', marginLeft: '0%'}} alt="TriSoft"/>
-                        {/* <img src="img/logo.png" style={{width: '5%', marginTop: '5%'}} alt="TriSoft"/> */}
+                        <img src={imgFromAsset} style={{ width: '20%', marginTop: '1%', marginLeft: '0%'}} alt="TriSoft"/>                       
                     </div>                
                 </If>
-
-                {/* Componentizar e usar no changes */}
-                <div className="p-col-12 p-lg-12">        
-                    <label >                                                 
-                        <span style={{marginLeft: '10px', fontSize: '10px'}}>
-                            {this.props.v3.name}
-                            {this.props.v3.version}
-                            - {this.props.v3.date}
-                        </span>
-                    </label>          
-                </div> 
+                
+            <div className="p-col-12 p-lg-6">     
+                {(this.state.userReady) ?
+                <div>                
+                <h3>
+                    <strong>{currentUser.username}</strong> Profile
+                </h3>
+               
+                <p>
+                    <strong>Token:</strong>{" "}
+                    {currentUser.accessToken.substring(0, 20)} ...{" "}
+                    {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
+                </p>
+                <p>
+                    <strong>Id:</strong>{" "}
+                    {currentUser.id}
+                </p>
+                <p>
+                    <strong>Email:</strong>{" "}
+                    {currentUser.email}
+                </p>
+                <strong>Authorities:</strong>
+                <ul>
+                {currentUser.roles &&
+                    currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
+                </ul>
+                </div>: null}
+                </div>        
+                
             </div>
         )
     }
 }
 
-const mapStateToProps = store => ({
-    v3: store.dashboardReducer.dashboardInfoV3    
-  });
-
-export default connect(mapStateToProps, null)(Dashboard);
+export default Dashboard;
