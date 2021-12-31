@@ -50,7 +50,7 @@ class Admin extends Component {
           alignItems: 'center',
           alignContent: 'center',
           justifyContent: 'center',
-          backgroundColor: '#AF0BC0',
+          backgroundColor: '#772953',
           color: '#fff',
           padding: '50px',
           borderRadius: '10px'

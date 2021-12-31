@@ -40,12 +40,13 @@ class Dashboard extends Component {
                     </div>                
                 </If>
                 
-            <div className="p-col-12 p-lg-6">     
+            <div className="p-col-12 p-lg-6 ">     
                 {(this.state.userReady) ?
-                <div>                
-                <h3>
-                    <strong>{currentUser.username}</strong> Profile
-                </h3>
+                <div className='dashboard-container'>                
+                <h1>
+                    {/* <strong>{currentUser.username}</strong> Profile */}
+                    <strong>Usuário: {currentUser.username}</strong>
+                </h1>
                
                 <p>
                     <strong>Token:</strong>{" "}
@@ -53,17 +54,14 @@ class Dashboard extends Component {
                     {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
                 </p>
                 <p>
-                    <strong>Id:</strong>{" "}
-                    {currentUser.id}
+                    <strong>Id:</strong>{" "}{currentUser.id}
                 </p>
                 <p>
-                    <strong>Email:</strong>{" "}
-                    {currentUser.email}
+                    <strong>Email:</strong>{" "}{currentUser.email}
                 </p>
                 <strong>Authorities:</strong>
                 <ul>
-                {currentUser.roles &&
-                    currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
+                {currentUser.roles && currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
                 </ul>
                 </div>: null}
                 </div>        
