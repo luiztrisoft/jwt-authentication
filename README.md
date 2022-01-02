@@ -2,11 +2,11 @@
 Implementação de autorização e autenticação com Spring e JWT
 
 ## Inserts iniciais
-´´´
+```
 INSERT INTO roles(name) VALUES('ROLE_USER');
 INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
 INSERT INTO roles(name) VALUES('ROLE_ADMIN');
-´´´
+```
 
 ## Criação de novos usuários com roles específicas
 ### POST: http://localhost:9999/api/auth/signup
