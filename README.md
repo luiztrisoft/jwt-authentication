@@ -25,16 +25,16 @@ INSERT INTO roles(name) VALUES('ROLE_ADMIN');
 
 ## Criação de novos usuários com roles específicas
 ### POST: http://localhost:9999/api/auth/signup
-### Admin
+### Body admin
 ```
-   {
+   	{
 		"username": "admin",
 		"email": "admin@hotmail.com",
 		"password": "123456",
 		"role":["admin"]
 	}
 ```
-# Moderator
+### Body moderator
 ```
 	{
 		"username": "mod",
@@ -43,7 +43,7 @@ INSERT INTO roles(name) VALUES('ROLE_ADMIN');
 		"role":["mod", "user"]
 	}
 ```
-# User
+### Body user
 ```
 	{
 		"username": "user",
