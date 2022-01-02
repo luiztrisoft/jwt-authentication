@@ -16,7 +16,7 @@ spring-boot:run
 npm start
 ```
 
-## Inserts iniciais
+## Inserts das roles iniciais
 ```
 INSERT INTO roles(name) VALUES('ROLE_USER');
 INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
