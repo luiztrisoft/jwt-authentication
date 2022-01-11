@@ -100,7 +100,7 @@ class Signup extends Component {
                         </div>
 
                         <div style={{marginTop: "30px"}} className="p-col-12 p-md-12 container">
-                            <Link to={"/login"}>Acesse agora mesmo</Link>
+                            <Link className='link' to={"/login"}>Acesse agora mesmo</Link>
                         </div>  
                     </div>      
                 </div>                      
