@@ -55,13 +55,15 @@ class Admin extends Component {
           padding: '50px',
           borderRadius: '10px'
         }
-        return (  
+        return (  this.state.content ?
             <div className="p-grid p-fluid" style={style}>   
                 <div className="p-col-12 p-lg-12">        
                     <h1>Admin</h1>
                     <p>{this.state.content}</p>
                 </div> 
             </div>
+            :
+            <div>carregando...</div>
         )
     }
 }
