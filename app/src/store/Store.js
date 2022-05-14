@@ -10,13 +10,15 @@ import {combineReducers, applyMiddleware, createStore} from 'redux';
 
 import { GlobalReducer } from './reducers/GlobalReducer';
 import { DashboardReducer } from './reducers/DashboardReducer';
+import { LoadReducer } from './reducers/LoadReducer';
 
 /**
 * Todos os reducers devem ser adicionados.
 */
 export const Reducers = combineReducers ({
     globalReducer: GlobalReducer,
-    dashboardReducer: DashboardReducer
+    dashboardReducer: DashboardReducer,
+    loadReducer: LoadReducer
 });
 
 export const Store = createStore(Reducers, applyMiddleware(thunk));

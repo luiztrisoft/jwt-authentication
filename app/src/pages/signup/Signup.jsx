@@ -1,10 +1,16 @@
 import React, {Component} from 'react';
-import {InputText} from 'primereact/inputtext';
-import {Button} from 'primereact/button';
-import './Signup.css';
+import { Link } from 'react-router-dom';
 import authService from '../../services/auth/auth.service';
 import swal from 'sweetalert';
-import { Link } from 'react-router-dom';
+import Input from '../../components/form/Input';
+
+
+import { bindActionCreators } from 'redux';
+import {setLoading} from '../../store/actions/LoadAction'
+
+import { connect } from 'react-redux';
+
+import './Signup.css';
 
 class Signup extends Component {    
     constructor() {
@@ -17,7 +23,7 @@ class Signup extends Component {
                 senha: undefined,
                 email: undefined
             },
-            errors:{}
+            submited: false
         };
     }
 
@@ -32,16 +38,30 @@ class Signup extends Component {
         });
     }
    
-
     handleRegister(e) {
         e.preventDefault();
+
+        this.setState({
+			...this.state,
+			submited: true
+		});
     
         const {usuario, email, senha} = this.state.form;
     
         if (usuario && email && senha) {
-          authService.register(usuario,email,senha).then(
-            response => {                
-              swal("Parabéns!", "Usuário salvo com sucesso","success");
+            this.props.setLoading(true);
+            authService.register(usuario,email,senha).then(
+                response => {                
+                swal("Parabéns!", "Usuário salvo com sucesso","success");
+                this.setState({
+                    form:{
+                        usuario: '',
+                        senha: '',
+                        email: ''
+                    },
+                    submited: false
+                });
+                this.props.setLoading(false);
             },
             error => {
               const msg =
@@ -50,65 +70,88 @@ class Signup extends Component {
                   error.response.data.message) ||
                 error.message ||
                 error.toString();
-    
-             swal("Ops!", msg, "error");
+                this.props.setLoading(false);
+                swal("Ops!", msg, "error");
             }
           );
         }else{
-            swal("Calma...", "Todos os campos devem ser preenchidos", "warning");
+            this.props.setLoading(false);
+            // swal("Calma...", "Todos os campos devem ser preenchidos", "warning");
         }
       }
 
     render() {   
         return (  
-            // <form submit={this.handleSubmit()} >
-            <div className="p-grid p-fluid container">                   
-                <div className="p-col-12 p-lg-3">                                                       
-                    <div className="p-grid p-fluid">                         
-                        
-                        <div className="p-col-12 p-md-12 container">
-                            <h1> <i className='fas fa-user-plus'/> Signup</h1>
-                        </div>  
+            <form>
+                <div className="signup-container ">
+                    <div className=" border border-secondary shadow p-3 mb-5 bg-body rounded">
+				        <h5 className="text-dark mb-4 col-12"><i className='fas fa-plus'/> Signup</h5>
 
-                        <div className="p-col-12 p-md-12">
-                            <InputText 
-                                name='usuario'
-                                placeholder="User"
-                                value={this.state.form.usuario}
-                                onChange={this.handleFormChange}                                
-                                />
-                        </div> 
-                        <div className="p-col-12 p-md-12">
-                            <InputText 
-                                name='email'
-                                placeholder="Email"
-                                value={this.state.form.email}
-                                onChange={this.handleFormChange}                                
-                                />
-                        </div> 
-                        <div className="p-col-12 p-md-12">
-                            <InputText 
-                                name='senha'
-                                placeholder="Password" 
-                                type='password'
-                                value={this.state.form.senha}
-                                onChange={this.handleFormChange}                                
-                                />
-                        </div>                        
-                        <div className="p-col-12 p-md-12" style={{textAlign:'center'}}>
-                            <Button label="Acessar" onClick={this.handleRegister}/>                        
+                        <Input
+					    	cols="12"
+					    	id={'usuario'}
+					    	label={'Usuário'}
+					    	name="usuario"
+					    	type={'text'}
+					    	placeholder={''}
+					    	required={true}
+					    	disabled={false}
+					    	value={this.state.form.usuario}
+					    	onChange={this.handleFormChange}
+					    	validation={!this.state.form.usuario && this.state.submited}
+					    />
+
+                        <Input
+					    	cols="12"
+					    	id={'email'}
+					    	label={'E-mail'}
+					    	name="email"
+					    	type={'email'}
+					    	placeholder={''}
+					    	required={true}
+					    	disabled={false}
+					    	value={this.state.form.email}
+					    	onChange={this.handleFormChange}
+					    	validation={!this.state.form.email && this.state.submited}
+					    />
+
+                        <Input
+							cols="12"
+							id={'password'}
+							label={'Senha'}
+							name="senha"
+							type={'password'}
+							placeholder={''}
+							required={true}
+							disabled={false}
+							value={this.state.form.senha}
+							onChange={this.handleFormChange}
+							validation={!this.state.form.senha && this.state.submited}
+						/>
+
+                        <div className="mb-4" />
+
+                        <div className="signup-container mb-0">
+                            <button type="submit" onClick={this.handleRegister} className="btn btn-primary mb-3">
+                                Cadastrar
+                            </button>
                         </div>
 
-                        <div style={{marginTop: "30px"}} className="p-col-12 p-md-12 container">
-                            <Link className='link' to={"/login"}>Acesse agora mesmo</Link>
-                        </div>  
-                    </div>      
-                </div>                      
-            </div>
-            // </form>
+                        <div className="signup-container mb-4">
+                            <Link className='text-primary' to={'/login'}>Acesse</Link>
+                        </div>
+                    </div>
+                </div>
+            </form>            
         )
     }
 }
 
+const mapDispatchToProps = (dispatch) =>
+	bindActionCreators({
+			setLoading
+		},dispatch
+	);
 
-export default Signup;
+
+export default connect(null,mapDispatchToProps)(Signup);

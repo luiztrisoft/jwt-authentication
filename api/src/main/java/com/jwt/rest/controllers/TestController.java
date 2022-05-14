@@ -16,20 +16,20 @@ public class TestController {
     }
 
     @GetMapping("/user")
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")//Não precisa anotar ja que é aberto a todos
     public String userAccess() {
-        return "LV. I";
+        return "Acesso LV. I";
     }
 
     @GetMapping("/mod")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public String moderatorAccess() {
-        return "LV. II";
+        return "Acesso LV. II";
     }
 
     @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")//Ao colocar na declaração da classe, ele configura para todos os métodos
     public String adminAccess() {
-        return "LV. III";
+        return "Acesso LV. III";
     }
 }

@@ -8,9 +8,9 @@ public class SignupRequest {
     @Size(min = 3, max = 20)
     private String username;
 
+    //@Email //EXISTE VALIDAÇÃO COM REGEX
     @NotBlank
     @Size(max = 50)
-    @Email
     private String email;
 
     private Set<String> role;

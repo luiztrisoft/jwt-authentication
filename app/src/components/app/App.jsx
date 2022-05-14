@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
-import {AppTopbar} from '../appTopbar/AppTopbar';
-import AppMenu from '../appMenu/AppMenu';
-import Routes from '../../Routes';
+import {Navbar} from './Navbar';
+import Sidebar from './Sidebar';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -13,8 +14,12 @@ import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import '../../styles/layout.scss';
 import './App.css';
-import PublicRoutes from '../../PublicRoutes';
 import authService from '../../services/auth/auth.service';
+import Routes from '../../Routes';
+import PublicRoutes from '../../PublicRoutes';
+
+import Spinner from 'react-spinkit';
+import If from '../If';
 
 class App extends Component {
     constructor() {
@@ -109,6 +114,21 @@ class App extends Component {
         window.location.reload() 
     }
 
+    renderLoading(){
+        return (
+            <If test={this.props.loading}>
+                <div id="loading" className="spinner-parent">
+				   <Spinner
+				   	className="custom-spinner-div"
+				   	name="ball-spin-fade-loader"
+				   	fadeIn="none"
+				   	color="lightcyan"
+				   />
+				</div>
+             </If>
+        )
+    }
+
     render() {
         const wrapperClass = classNames('layout-wrapper', {
             'layout-overlay': this.state.layoutMode === 'overlay',
@@ -119,15 +139,29 @@ class App extends Component {
         });
         
 		return(
-		    this.state.currentUser ? (        
-                <div className={wrapperClass} onClick={this.onWrapperClick}>
-                    <AppTopbar onToggleMenu={this.onToggleMenu} logOut={this.logOut}/>                
-                    <AppMenu/>
-                    <Routes/>                
-                </div>            
-            ) : <PublicRoutes/> 
+		    this.state.currentUser ? (                  
+                <div>   
+                    {this.renderLoading()}
+
+                    <div className={wrapperClass} onClick={this.onWrapperClick}>
+                       <Navbar onToggleMenu={this.onToggleMenu} logOut={this.logOut}/>                
+                       <Sidebar/>
+                       <Routes/>
+                    </div>            
+                </div>
+            ) : 
+                <div>   
+                   {this.renderLoading()}
+                    <PublicRoutes/> 
+                </div>
         );
     }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+	loading: state.loadReducer.loading
+});
+
+const mapDispatchToProps = {};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
