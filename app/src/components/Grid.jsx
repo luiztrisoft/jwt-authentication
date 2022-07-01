@@ -1,6 +1,7 @@
 // import React, { useState, useEffect } from 'react';
 import React, { Component } from 'react';
 import axios from 'axios';
+import GridPagination from './GridPagination';
 
 class Grid extends Component {
 	constructor() {
@@ -34,7 +35,7 @@ class Grid extends Component {
 			lazyParams: {
 				...this.state.lazyParams,
 				page: params.page,
-        first: params.first
+				first: params.first
 			}
 		});
 
@@ -59,27 +60,36 @@ class Grid extends Component {
 			pageNumbers.push(i);
 		}
 
-    const {lazyParams, totalRecords} = this.state;
-    const{page, rows, first} = lazyParams;
+		const { lazyParams, totalRecords } = this.state;
+		const { page, rows, first } = lazyParams;
 
-    //A LOGICA TA CERTA, FALTA AJUSTAR O PAGINADOR NA TELA
-    const base = 8
-    let qtdNext = base - 1; //8 - page 2 = 6 //restaria 1
-    let qtdPrevious = 7 - qtdNext; //7 - next 6 = 1
+		//A LOGICA TA CERTA, FALTA AJUSTAR O PAGINADOR NA TELA
+		const base = 8;
+		let qtdNext = base - 1; //8 - page 2 = 6 //restaria 1
+		let qtdPrevious = 7 - qtdNext; //7 - next 6 = 1
 
-    let previous = []
-    for (let i = 0; i < qtdPrevious; i++) {
+		let previous = [];
+		for (let i = 0; i < qtdPrevious; i++) {
 			previous.push(i);
-		} 
+		}
 
-    let next = []
-    for (let i = 0; i < qtdNext; i++) {
+		let next = [];
+		for (let i = 0; i < qtdNext; i++) {
 			next.push(i);
-		} 
-
+		}
 
 		return (
-			<div className="container mt-5">
+			<div className="container ">
+				<GridPagination
+					lazyParams={lazyParams}
+					totalRecords={totalRecords}
+					page={page}
+					rows={rows}
+					first={first}
+					pageNumbers={pageNumbers}
+					loadLazyData={this.loadLazyData}
+				/>
+
 				{/* <ul class="pagination">
 					<li class="page-item"><a class="page-link" href="#">Previous</a></li>
 					<li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -92,97 +102,28 @@ class Grid extends Component {
         <p>FIRST {first}</p>
         <p>TOTAL {totalRecords}</p>
          */}
-        <p>Prev {previous.length}</p>
-         	<p>Next {next.length}</p>
-        
-        
-        <nav>
+				{/* <p>Prev {previous.length}</p>
+         	<p>Next {next.length}</p> */}
+
+				{/* <p>{first + rows}</p>
+			<p>FIRST {first}</p>
+			 <p>PAGE {page}</p>
+			 <p>ROWS {rows}</p>
+			 <p>PAGE NUMBER {pageNumbers.length}</p>
+			 <p>TOTAL RECORDS {totalRecords}</p> */}
+
+				<nav>
 					<ul className="pagination  pagination-sm justify-content-center">
-          <li key={'first'} className='page-item '>          
-            <a onClick={() => this.loadLazyData({first: 0,rows,page: 1})} className='page-link text-primary'>
-              {'<<'}
-            </a>
-          </li>
-
-          {/* OK */}
-          <li key={'one-minus'} className='page-item '>          
-            <a onClick={() => this.loadLazyData({              
-              first: page === 1 ? 0 : ((page - 1) * rows - rows), rows, page: page > 1 ? page - 1 : 1})} 
-              className='page-link text-primary'>
-              {'<'}
-            </a>
-          </li>
-
-          {/********************************* 
-
-          CENTRAL ATIVO 
-          
-          *********************************/}  
-                  
-          <li key={'current'} className='page-item active'>          
-            <label className='page-link '><strong> {page} </strong></label>
-          </li>
-
-          {/* {next.map(number => (    
-            <li key={number} className='page-item'>          
-              <a className='page-link ' onClick={() => this.loadLazyData({ first, rows,number: number + 1 + page})}><strong> {number + 1 + page} </strong></a>
-            </li>						
-          ))} */}
-        
-        
-
-
-
-          <li key={'one-plus'} className='page-item '>          
-            <a onClick={() => this.loadLazyData({
-              first: (first + rows) >= totalRecords ? totalRecords - rows : page * rows, rows, page: page < pageNumbers.length ? page + 1 : pageNumbers.length})} 
-              className='page-link text-primary'>
-              {'>'}
-            </a>
-          </li>
-
-          <li key={'last'} className='page-item '>
-            <a onClick={() => this.loadLazyData({
-              first: totalRecords - rows, rows, page: pageNumbers.length})} 
-              className='page-link text-primary'>
-              {'>>'}
-            </a>
-          </li>
-          <br></br>
-          <p className='justify-content-center'>{page} de {pageNumbers.length}</p>
-						
+						<p className="justify-content-center">
+							{page} de {pageNumbers.length}
+						</p>
 					</ul>
 				</nav>
 
+				<h2 className="justify-content-center">
+					{page} de {pageNumbers.length}
+				</h2>
 
-
-				{/* <nav>
-					<ul className="pagination  pagination-sm justify-content-center">
-
-          <li key={'first'} className='page-item '>          
-            <a onClick={() => this.loadLazyData({first: 0,rows: this.state.lazyParams.rows,page: 1})} className='page-link'>
-              {'<<'}
-            </a>
-          </li>
-							
-
-						{pageNumbers.map((number) => (              
-							<li
-								key={number}
-								className={`page-item ${this.state.lazyParams.page === number ? 'active' : ''} `}
-							>
-								<a
-									onClick={() => this.loadLazyData({first: (number - 1) * this.state.lazyParams.rows,rows: this.state.lazyParams.rows,page: number})} //href='!#'
-									className={`page-link ${this.state.lazyParams.page === number ? '' : 'text-primary'}`}
-								>
-									{number}
-								</a>
-							</li>
-						))}
-					</ul>
-				</nav> */}
-
-				{/* <Posts posts={currentPosts} loading={loading} /> */}
 				<table className="table table-striped">
 					<thead>
 						<tr>
@@ -195,7 +136,6 @@ class Grid extends Component {
 							<tr key={post.id}>
 								<td>{post.id} </td>
 								<td> {post.name}</td>
-								{/* <td > {post.title}</td> */}
 							</tr>
 						))}
 					</tbody>

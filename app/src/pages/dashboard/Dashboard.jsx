@@ -48,15 +48,15 @@ class Dashboard extends Component {
     render() {
         
         return (
-            <div className="container">                                
-                <div className="mb-3 col-12" >
-                  <h1>Dashboard</h1>
-                </div>
+            // <div className="container">                                
+                // <div className="mb-3 col-12" >
+                // </div>
+                <div className="mb-3 col-12">
+                  <h1 >Dashboard</h1>
 
                 {/* <Table/> */}
-                <Grid/>
+                {/* <Grid/> */}
                 {/* <DanieleLeao/> */}
-
                 {/* <DataTableLazyDemo/> */}
 
                 
